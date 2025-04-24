@@ -30,12 +30,13 @@ sn_in_inventory = y['SN'].dropna().astype(int).tolist()
 y = y[y['SN'].isin(sn_in_inventory)]
 
 # Filters UI
-st.title("Fiber Inventory Filter")
+st.title("Q.ANT's Fiber Inventory Filter")
 
 # Wavelength
-wavelength_option = st.selectbox("Choose Wavelength", ["", "780", "980", "1550", "780/1550/780"])
+wavelengths = ["780", "980", "1550", "780/1550/780"]
+wavelength_option = st.multiselect("Choose Wavelength", wavelengths)
 if wavelength_option:
-    x = x[x['Wavelength'] == wavelength_option]
+    x = x[x['Wavelength'].isin(wavelength_option)]
 
 # Tip Type
 tip_options = ["Cleaved", "Lensed", "Tapered/Spliced", "WAFT"]
@@ -44,26 +45,38 @@ if selected_tips:
     x = x[x['Tip type'].isin(selected_tips)]
 
 # Channel
-channel_options = sorted(x['Channel'].dropna().unique().tolist())
+channel_options = list(range(41))
 selected_channels = st.multiselect("Choose Channel Count(s)", channel_options)
 if selected_channels:
     x = x[x['Channel'].isin(selected_channels)]
 
 # V-Groove Pitch
 pitch_options = ["127", "250", "500"]
-selected_pitch = st.selectbox("Select V-groove Pitch", [""] + pitch_options)
+selected_pitch = st.multiselect("Select V-groove Pitch",  pitch_options)
 if selected_pitch:
-    x = x[x['V-groove pitch'] == selected_pitch]
+    x = x[x['V-groove pitch'].isin(selected_pitch)]
 
-# Fiber Material
-material_options = sorted(x['Fiber 1 material'].dropna().unique())
-selected_material = st.selectbox("Select Fiber Material", [""] + material_options)
+# V-Groove tolerance
+Tolerance_options =["+/-0.5","+/-100","+/-1.0","+/-0.6","+/-0.7","+/-0.8","+/-0.9","+/-0.10","+/-0.11","+/-0.12","+/-0.13","+/-0.14","+/-0.15","+/-0.16","/-0.3µm"]
+selected_tolerance = st.multiselect("Select V-Groove tolerance", Tolerance_options)
+if selected_tolerance:
+    x=x[x['V-Groove tolerance'].isin(Tolerance_options)]
+
+# Fiber 1 Material
+material_options = ["10210030","10210038","HA15-PS-U25D","Nufern UHNA3 1550","Nufern UHNA3 980","Nufern UHNA7", "PM1016L", "PM15-U25D" ,"PM1550-XP", "PM2000D" ,"PM780-HP", "PM980-XP",  
+"SMF-28 Ultra" ,"UHNA7, YOFC PM1016-T"]
+selected_material = st.multiselect("Select Fiber 1 Material", material_options)
 if selected_material:
     x = x[x['Fiber 1 material'] == selected_material]
 
+# Fiber 2 Material
+selected_material = st.multiselect("Select Fiber 2 Material", material_options)
+if selected_material:
+    x = x[x['Fiber 2 material'] == selected_material]
+
 # MFD
-mfd_options = sorted(x['MFD'].dropna().unique())
-selected_mfd = st.selectbox("Select MFD", [""] + mfd_options)
+mfd_options = [ "3.5 ± 0.3","1.9 - 3.6", "2.5 ± 0.3", "2.5 ± 0.5","3.2 ± 0.3","3.2 ± x.x","4.0 ± 0.3","4.1 ± 0.3","4.2 x 3.2","850: 5.3 ± 1.0","6.6 ± 0.5","10.1 ± 0.4", "10.4 ± 0.5","1060:10.5 ± 0.5", "1.5x1.5","3x3", "4.1x3.1","5x5"]
+selected_mfd = st.multiselect("Select MFD",  mfd_options)
 if selected_mfd:
     x = x[x['MFD'] == selected_mfd]
 
@@ -72,16 +85,38 @@ sn_columns = ['Serial numbers', 'SN2', 'SN3', 'SN4', 'SN5', 'SN6', 'SN7', 'SN8',
 filtered_SN = []
 for col in sn_columns:
     if col in x.columns:
-        filtered_SN += x[col].dropna().astype(float).astype(int).tolist()
+       for el in x[col]:
+           if type(el) in [int,float] and not pd.isna(el):
+              filtered_SN.append(int(el))
+
+#planned fibers
+planned_fibers=[]
+planned_columns = ['Planned use','PU2','PU3','PU4','PU5','PU6','PU7','PU8','PU9','PU10']
+for item in planned_columns:
+    for el in x[item]:
+        if type(el) in [int,float] and not pd.isna(el):
+           planned_fibers.append(int(el))
+
+
 
 # Match SNs with inventory
 match_list = list(set(sn_in_inventory).intersection(filtered_SN))
 new_inv_table = y[y['SN'].isin(match_list)]
+new= new_inv_table[['PN', 'SN', 'Box number']]
+
+#highligthing planned fiber arrays
+def highlight_all(val):
+    return 'background-color: yellow' if val in planned_fibers else ''
+
+new_inv = new.style.applymap(highlight_all).format({'PN': '{:.0f}','SN': '{:.0f}'})
 
 # Display results
-st.subheader("Filtered Inventory")
-st.dataframe(new_inv_table[['PN', 'SN', 'Box number']])
+st.subheader("Available in Inventory")
+st.dataframe(new_inv)
+#st.dataframe(new_inv[['PN', 'SN', 'Box number']])
 
-# Show count
 count = len(new_inv_table)
-st.success(f"{count} fiber{'s' if count != 1 else ''} found")
+st.success(f"{count} fiber{'s' if count != 1 else 'nothing in inventory'} found")
+
+st.subheader("Filtered table")
+st.dataframe(x) else ''} found")
