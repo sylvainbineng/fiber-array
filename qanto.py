@@ -148,8 +148,8 @@ if selected_table =='A table showing the matching FAs available in our inventory
 elif selected_table =='A general table showing all the characteristics of the matching FAs':
     # Display results
     st.subheader("Matching FAs and their characteristics")
-    st.dataframe(x)
-    count = len(x)
+    st.dataframe(x.dropna())
+    count = len(x.dropna())
     if count>0:
        st.success(f"{count} corresponding fiber arrays found")
     elif count==0:
@@ -167,8 +167,8 @@ elif selected_table == 'Both tables':
    
        # Display results
    st.subheader("Matching FAs and their characteristics")
-   st.dataframe(x)
-   count = len(x)
+   st.dataframe(x.dropna())
+   count = len(x.dropna())
    if count>0:
        st.success(f"{count} corresponding fiber arrays found")
    elif count==0:
@@ -184,7 +184,7 @@ z=y[y['PN'].isin(found_in_inventory_but_not_in_table)]
 err = z[['PN','SN']].round(0)
 
 # add errors
-options = ["yes","no thank you"]
+options = ["no thank you","yes"]
 error = st.selectbox("would you like to see the existing errors in your excel file?",options)
 if error == "yes":
     st.subheader("These FAs are in the inventory but not registered under the big table (lack of diagrams).So the can't appear on the filtered inventory table")
