@@ -148,8 +148,8 @@ if selected_table =='A table showing the matching FAs available in our inventory
 elif selected_table =='A general table showing all the characteristics of the matching FAs':
     # Display results
     st.subheader("Matching FAs and their characteristics")
-    st.dataframe(x.dropna())
-    count = len(x.dropna())
+    st.dataframe(x)
+    count = len(x)
     if count>0:
        st.success(f"{count} corresponding fiber arrays found")
     elif count==0:
@@ -167,8 +167,8 @@ elif selected_table == 'Both tables':
    
        # Display results
    st.subheader("Matching FAs and their characteristics")
-   st.dataframe(x.dropna())
-   count = len(x.dropna())
+   st.dataframe(x)
+   count = len(x)
    if count>0:
        st.success(f"{count} corresponding fiber arrays found")
    elif count==0:
