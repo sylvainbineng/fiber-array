@@ -44,13 +44,11 @@ selected_tips = st.multiselect("Choose Tip Type(s)", tip_options)
 if selected_tips:
     x = x[x['Tip type'].isin(selected_tips)]
 
-##################################
 #Dimension lid
 dimensions = ["5x4.7x1.0",1.0, 0.5, 0.1]
 Dimension_lid_option = st.multiselect("Choose Dimension lid", dimensions)
 if Dimension_lid_option:
     x = x[x['Dimension_lid'].isin(dimensions)]
-#####################################
 
 # Channel
 channel_options = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40"]
@@ -130,7 +128,7 @@ for item in planned_columns:
 # Match SNs with inventory
 match_list = list(set(pn_in_inventory).intersection(clean_table_pn))
 new_inv_table = y[y['PN'].isin(match_list)]
-new= new_inv_table[['PN', 'SN', 'Box number']]
+new= new_inv_table[['PN', 'SN', 'Box number','Chanel count']]
 
 
 #highligthing planned fiber arrays
