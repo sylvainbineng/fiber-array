@@ -45,7 +45,7 @@ if selected_tips:
     x = x[x['Tip type'].isin(selected_tips)]
 
 #Dimension lid
-dimensions = ["5x4.7x1.0",1.0, 0.5, 0.1]
+dimensions = ["5x4.7x1.0","1.0", "0.5", "0.1"]
 Dimension_lid_option = st.multiselect("Choose Dimension lid", dimensions)
 if Dimension_lid_option:
     x = x[x['Dimension_lid'].isin(dimensions)]
