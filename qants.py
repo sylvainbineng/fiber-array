@@ -32,6 +32,24 @@ y = y[y['PN'].isin(pn_in_inventory)]
 # Filters UI
 st.title("Q.ANT's Fiber Array Inventory")
 
+# V-Groove Pitch
+pitch_options = ["127", "250", "500"]
+selected_pitch = st.multiselect("Select V-groove Pitch",  pitch_options)
+if selected_pitch:
+    x = x[x['V-groove pitch'].isin(selected_pitch)]
+
+# Channel
+channel_options = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40"]
+selected_channels = st.multiselect("Choose Channel Count(s)", channel_options)
+if selected_channels:
+    x = x[x['Channel'].isin(selected_channels)]
+
+# Tip Type
+tip_options = ["Cleaved", "Lense (printed)", "Tapered / spliced", "WAFT"]
+selected_tips = st.multiselect("Choose Tip Type(s)", tip_options)
+if selected_tips:
+    x = x[x['Tip type'].isin(selected_tips)]
+
 # Wavelength
 wavelengths = ["780", "980", "1550", "780/1550/780"]
 wavelength_option = st.multiselect("Choose Wavelength", wavelengths)
@@ -39,10 +57,10 @@ if wavelength_option:
     x = x[x['Wavelength'].isin(wavelength_option)]
 
 # Tip Type
-tip_options = ["Cleaved", "Lense (printed)", "Tapered / spliced", "WAFT"]
-selected_tips = st.multiselect("Choose Tip Type(s)", tip_options)
-if selected_tips:
-    x = x[x['Tip type'].isin(selected_tips)]
+#tip_options = ["Cleaved", "Lense (printed)", "Tapered / spliced", "WAFT"]
+#selected_tips = st.multiselect("Choose Tip Type(s)", tip_options)
+#if selected_tips:
+ #   x = x[x['Tip type'].isin(selected_tips)]
 
 #Dimension lid
 dimensions = ["5x4.7x1.0","1.0", "0.5", "0.1"]
@@ -51,22 +69,18 @@ if dimension_lid_option:
    x = x[x['Dimension lid'].isin(dimension_lid_option)]
 
 # Channel
-channel_options = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40"]
-selected_channels = st.multiselect("Choose Channel Count(s)", channel_options)
-if selected_channels:
-    x = x[x['Channel'].isin(selected_channels)]
+#channel_options = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40"]
+#selected_channels = st.multiselect("Choose Channel Count(s)", channel_options)
+#if selected_channels:
+    #x = x[x['Channel'].isin(selected_channels)]
 
-# V-Groove Pitch
-pitch_options = ["127", "250", "500"]
-selected_pitch = st.multiselect("Select V-groove Pitch",  pitch_options)
-if selected_pitch:
-    x = x[x['V-groove pitch'].isin(selected_pitch)]
+
 
 # V-Groove tolerance
-Tolerance_options =["+/-0.5","+/-100","+/-1.0","+/-0.6","+/-0.7","+/-0.8","+/-0.9","+/-0.10","+/-0.11","+/-0.12","+/-0.13","+/-0.14","+/-0.15","+/-0.16","/-0.3µm"]
-selected_tolerance = st.multiselect("Select V-Groove tolerance", Tolerance_options)
-if selected_tolerance:
-    x=x[x['V-groove tolerance'].isin(selected_tolerance)]
+#Tolerance_options =["+/-0.5","+/-100","+/-1.0","+/-0.6","+/-0.7","+/-0.8","+/-0.9","+/-0.10","+/-0.11","+/-0.12","+/-0.13","+/-0.14","+/-0.15","+/-0.16","/-0.3µm"]
+#selected_tolerance = st.multiselect("Select V-Groove tolerance", Tolerance_options)
+#if selected_tolerance:
+ #   x=x[x['V-groove tolerance'].isin(selected_tolerance)]
 
 # Fiber 1 Material
 material_options = ["10210030","10210038","10210017","HA15-PS-U25D","Nufern UHNA3 1550","Nufern UHNA3 980","Nufern UHNA7", "PM1016L", "PM15-U25D" ,"PM1550-XP", "PM2000D" ,             "PM780-HP","PM980-XP","SMF-28 Ultra" ,"UHNA7", "YOFC PM1016-T","Corning ClearCurve LBL Optical fiber","corning PM15-U25D"]
